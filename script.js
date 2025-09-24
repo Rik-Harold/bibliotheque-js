@@ -3,13 +3,12 @@
  */
 class Bibliotheque {
     // Paramètres de la bibliothèque
-    livres = []
-    utilisateurs = []
+    // livres = []
+    // utilisateurs = []
     emprunts = []
     prochainIdLivre = 1
     prochainIdUtilisateur = 1
-    prochainIdEmprunt = 1
-    
+    prochainIdEmprunt = 1    
 
     /**
      * Ajoute un livre à la bibliothèque avec validation complète
@@ -20,11 +19,12 @@ class Bibliotheque {
      */
     ajouterLivre(titre, auteur, quantiteTotal) {
         // Vérification des paramètres
+        let livres = JSON.parse(localStorage.getItem('livres'))
         if ((typeof(titre) == typeof(auteur)) && typeof(titre) == "string" && typeof(quantiteTotal) == "number") {
             // Vérification si le livre n'existait pas
-            if (!this.livres.some(livre => livre.titre == titre)) {
+            if (!livres.some(livre => livre.titre == titre)) {
                 // Ajout du livre
-                this.livres.push({
+                livres.push({
                     id: this.prochainIdLivre,
                     titre: titre,
                     auteur: auteur,
@@ -32,7 +32,7 @@ class Bibliotheque {
                     quantiteDisponible: quantiteTotal
                 })
                 // Mise à jour du localStorage
-                localStorage.setItem('livres', JSON.stringify(this.livres))
+                localStorage.setItem('livres', JSON.stringify(livres))
                 // Identification du prochain id
                 this.prochainIdLivre += 1
                 // Notification d'ajout
@@ -64,7 +64,8 @@ class Bibliotheque {
         // Tableau des livres recherchés
         let booksFiltered = []
         
-        this.livres.forEach(livre => {
+        let livres = JSON.parse(localStorage.getItem('livres'))
+        livres.forEach(livre => {
             // Vérification par critères
             if (livre.titre.toLowerCase().includes(criteres.toLowerCase()) || livre.auteur.toLowerCase().includes(criteres.toLowerCase())) {
                 // Ajout du livre
@@ -85,12 +86,13 @@ class Bibliotheque {
     supprimerLivre(id) {
         if (typeof(id) == "number") {
             // Récupération du livre
-            const index = this.livres.findIndex(livre => livre.id === parseInt(id))
+            let livres = JSON.parse(localStorage.getItem('livres'))
+            const index = livres.findIndex(livre => livre.id === parseInt(id))
             if (index) {
                 // Suppression du livre
-                const sup = this.livres.splice(index, 1)
+                const sup = livres.splice(index, 1)
                 // Mise à jour du localStorage
-                localStorage.setItem('livres', JSON.stringify(this.livres))
+                localStorage.setItem('livres', JSON.stringify(livres))
                 // Notification de suppression
                 return { succes: true, message: "Livre supprimé avec succès!", sup }
             } else {
@@ -114,19 +116,25 @@ class Bibliotheque {
         // - Valider le téléphone (10 chiffres)
         // - Vérifier que l'email n'existe pas déjà
         // - Créer l'utilisateur avec ID unique
+
+        // Récupération des utilisateurs
+        let utilisateurs = JSON.parse(localStorage.getItem('utilisateurs'))
+        console.log("test");
+        console.log(utilisateurs);
+        
         
         if ((typeof(nom) == typeof(prenom)) && (typeof(prenom) == typeof(email)) &&  typeof(prenom) == "string") {
-            // Valisation de l'ISBN
-            if (this.validerEmail(email) && !this.utilisateurs.some(utilisateur => utilisateur.email == email)) {
+            // Valisation de l'email
+            if (this.validerEmail(email) && !utilisateurs.some(utilisateur => utilisateur.email == email)) {
                 // Ajout de l'utilisateur
-                this.utilisateurs.push({
+                utilisateurs.push({
                     id: this.prochainIdUtilisateur,
                     nom: nom,
                     prenom: prenom,
                     email: email,
                 })
                 // Mise à jour du localStorage
-                localStorage.setItem('utilisateurs', JSON.stringify(this.utilisateurs))
+                localStorage.setItem('utilisateurs', JSON.stringify(utilisateurs))
                 // Identification du prochain id
                 this.prochainIdUtilisateur += 1
                 // Notification d'ajout
@@ -148,17 +156,14 @@ class Bibliotheque {
     */
     supprimerUtilisateur(id) {
         if (typeof(id) == "number") {
-            // Récupération du livre
-            const index = this.utilisateurs.findIndex(utilisateur => utilisateur.id === parseInt(id))
-            if (index) {
+            // Récupération de l'utilisateur
+            let utilisateurs = JSON.parse(localStorage.getItem('utilisateurs'))
+            const index = utilisateurs.findIndex(utilisateur => utilisateur.id === parseInt(id))
+            if (index != -1) {
                 // Suppression de l'utilisateur
-                console.log(this.utilisateurs);
-                console.log(localStorage.getItem('utilisateurs'));
-                const sup = this.utilisateurs.splice(index, 1)
+                const sup = utilisateurs.splice(index, 1)
                 // Mise à jour du localStorage
-                localStorage.setItem('utilisateurs', JSON.stringify(this.utilisateurs))
-                console.log(localStorage.getItem('utilisateurs'));
-                console.log(this.utilisateurs);
+                localStorage.setItem('utilisateurs', JSON.stringify(utilisateurs))
                 
                 // Notification de suppression
                 return { succes: true, message: "Utilisateur supprimé avec succès!", sup }
@@ -186,7 +191,7 @@ class Bibliotheque {
 
         // Vérification de l'existense de l'utilisateur
         if (this.utilisateurs.some(unUtilisateur => unUtilisateur.id == utilisateurId) && this.livres.some(unLivre => unLivre.id == livreId && unLivre.quantiteDisponible > 0) ) {
-            // Ajout du livre dans l'utlisateur
+            // Ajout du livre dans l'objet utlisateur
         } else {
             return { succes: false, message: "Cet utilisateur n'existe pas!" }
         }
@@ -212,24 +217,6 @@ class Bibliotheque {
     }
 
     /**
-     * Génère des statistiques complètes de la bibliothèque
-     * @returns {object} Objet contenant toutes les statistiques
-     */
-    genererStatistiques() {
-        // TODO: Implémenter les statistiques avancées
-        // - Livre le plus emprunté
-        // - Genre le plus populaire
-        // - Utilisateur le plus actif
-        // - Taux d'occupation de la bibliothèque
-        // - Moyenne d'emprunts par utilisateur
-        // - Livres jamais empruntés
-        // - Retards moyens
-        
-        console.log("À implémenter : genererStatistiques");
-        return {};
-    }
-
-    /**
      * Valide le format d'un email
      * @param {string} email - Email à valider
      * @returns {boolean} True si valide
@@ -238,17 +225,6 @@ class Bibliotheque {
         // TODO: Implémenter la validation email
         const regex = new RegExp(/^[a-zA-Z0-9._%+-]+\@[a-zA-Z0-9]+\.[a-zA-Z]{2,}$/)
         return regex.test(email)
-    }
-
-    /**
-     * Calcule la date de retour (14 jours après la date d'emprunt)
-     * @param {Date} dateEmprunt - Date d'emprunt
-     * @returns {Date} Date de retour prévue
-     */
-    calculerDateRetour(dateEmprunt) {
-        // TODO: Implémenter le calcul de date de retour
-        console.log("À implémenter : calculerDateRetour");
-        return new Date();
     }
 
     /**
@@ -265,10 +241,8 @@ class Bibliotheque {
         // Ajoute des livres
         const infoLivres1 = this.ajouterLivre(book1.titre, book1.auteur, book1.quantiteTotal)
         const infoLivres2 = this.ajouterLivre(book2.titre, book2.auteur, book2.quantiteTotal)
-        // const infoLivres3 = this.ajouterLivre(book3.titre, book3.auteur, book3.isbn, book3.annee, book3.genre)
         console.log(infoLivres1);
         console.log(infoLivres2);
-        // console.log(infoLivres3);
         
         // Ajouter des utilisateurs
         const infoUtilisateur1 = this.ajouterUtilisateur(user1.nom, user1.prenom, user1.email)
@@ -299,9 +273,14 @@ class Bibliotheque {
 }
 
 // Déclaration
+localStorage.setItem('livres', JSON.stringify([]))
+localStorage.setItem('utilisateurs', JSON.stringify([]))
+localStorage.setItem('emprunts', JSON.stringify([]))
 let bibliotheque = new Bibliotheque()
-// // Données test
+
+// Données test
 bibliotheque.initialiserDonneesTest()
+
 // const results = bibliotheque.ajouterLivre("test", "auteur test", "123-4-22-258741-7", 2024, "roman")
 // Affichage
 // console.log(results);
@@ -325,16 +304,6 @@ bibliotheque.initialiserDonneesTest()
 // console.log(bibliotheque.getLivres());
 
 
-
-// 
-
-
-
-
-// Data
-// localStorage.setItem("livres", bibliotheque.getUtilisateurs())
-
-
 /**
  * Supression d'un utlisateur
  * @param {number} id - Identififiant de l'utilisateur
@@ -349,8 +318,6 @@ const deleteOneUser = (id, users) => {
     }
     // Mise à jour de la liste des utilisateurs
     updateUsers(users)
-
-    // event.preventDefault();
 }
 
 /**
@@ -370,10 +337,26 @@ const deleteOneBook = (id) => {
 }
 
 /**
+ * Supression d'un utlisateur
+ * @param {number} id - Identififiant de l'utilisateur
+*/
+const addOneUser = (id, users) => {
+    // Demande de confirmation
+    const reponseUser1 = confirm("Voulez-vous vraiment supprimer cet utilisateur ?")
+    // Supression si confirmé
+    if (reponseUser1) {
+        const info = bibliotheque.supprimerLivre(id)
+        console.log(info)
+    }
+    // Mise à jour de la liste des utilisateurs
+    updateUsers(users)
+}
+
+/**
  * Mise à jour et affichage des utilisateurs
  * @param {Array} data - Identififiant de l'utilisateur
 */
-const updateUsers = (data) => {
+const updateUsers = () => {
     // Récupération de la zone utilisateur
     let userZone = document.getElementById('users')
     // Récupération des utilisateurs
@@ -416,7 +399,7 @@ const updateBooks = (data) => {
     console.log(dataBooks);
 }
 
-7/**
+/**
  * Mise à jour et affichage des livres emprunter
  * @param {Array} data - Identififiant de l'utilisateur
 */
