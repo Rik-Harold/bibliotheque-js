@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bibliothèque</title>
+    <!-- Style -->
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-800 p-8 text-white">
+    <!-- Barre de navigation -->
+    <nav class="flex justify-between">
+        <a href="#hero">Bibliothèque</a>
+        <div>
+            <ul class="flex">
+                <li class="px-4 py-2"><a href="#livres">Catalogue</a></li>
+                <li class="px-4 py-2"><a href="#utilisateurs">Utilisateurs</a></li>
+                <li class="px-4 py-2"><a href="#emprunts">Emprunter un livre</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Zone de recherche -->
+    <div id="search" class="mx-8 mt-6 bg-slate-400 rounded-4xl">
+        <input type="text" placeholder="Rechercher un livre" class="px-10 py-4 w-full outline-none">
+    </div>
+
+    <!-- Section Livres -->
+    <section id="livres" class="mb-12">
+        <h2 class="py-6">Gestion des Livres</h2>
+        <!-- Formulaire d'ajout livre -->
+        <form id="form-livre" class="flex justify-between my-4 bg-gray-700 px-4 py-6 rounded-lg"> 
+            <input type="text" name="auteur" id="nom" placeholder="Auteur" class="bg-gray-50 rounded-4xl w-[250px] text-black outline-none py-3 px-8 w-[150]">
+            <input type="text" name="titre" id="prenom" placeholder="Titre" class="bg-gray-50 rounded-4xl w-[250px] text-black outline-none py-3 px-8 w-[150]">
+            <input type="number" name="quantite" id="quantite" placeholder="Quantité" class="bg-gray-50 rounded-4xl w-[250px] text-black outline-none py-3 px-8 w-[150]">
+            <button class="rounded-lg bg-blue-500 px-4 py-2">Ajouter</button>
+        </form>
+        
+        <!-- Liste des livres -->
+        <div id="liste-livres" class="flex space-x-8 mx-8 mt-6">
+            <!-- Carte d'un livre -->
+        </div>
+    </section>
+
+    <!-- Section Utilisateurs -->
+    <section id="utilisateurs" class="mb-12">
+        <h2 class="py-6">Gestion des Utilisateurs</h2>
+        <form id="form-utilisateur" class="flex justify-between my-4 bg-gray-700 px-4 py-6 rounded-lg"> 
+            <input type="text" name="nom" id="nom" placeholder="Saisir un nom" class="bg-gray-50 rounded-4xl w-[250px] text-black outline-none py-3 px-8 w-[150]">
+            <input type="text" name="prenom" id="prenom" placeholder="Saisir un prénom" class="bg-gray-50 rounded-4xl w-[250px] text-black outline-none py-3 px-8 w-[150]">
+            <input type="email" name="email" id="email" placeholder="xxx@gmail.com" class="bg-gray-50 rounded-4xl w-[250px] text-black outline-none py-3 px-8 w-[150]">
+            <button class="rounded-lg bg-blue-500 px-4 py-2">Ajouter</button>
+        </form>
+
+        <!-- Liste des utilisateurs -->
+        <div id="liste-utilisateurs">
+            <table class="w-full rounded-lg">
+                <thead class="bg-gray-900">
+                    <tr>
+                        <th class="p-4">Nom</th>
+                        <th class="p-4">Prénom</th>
+                        <th class="p-4">Email</th>
+                        <th class="p-4">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="users" class="text-center">
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Section Emprunts -->
+    <section id="emprunts" class="mb-12">
+        <h2 class="py-6">Gestion des Emprunts</h2>
+        <form id="form-emprunt">
+            <!-- Formulaire d'emprunt -->
+        </form>
+
+        <!-- Liste des emprunts -->
+        <div id="liste-emprunts" class="flex space-x-8">
+            <!-- Carte d'un livre -->
+        </div>
+    </section>
+    <!-- Script js -->
+    <script src="script.js"></script>
+</body>
+</html>

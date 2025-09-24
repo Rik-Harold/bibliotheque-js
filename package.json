@@ -1,0 +1,23 @@
+{
+  "name": "bibliotheque",
+  "version": "1.0.0",
+  "description": "Bibliothèque avec gestion d'emprunt de livres par les utilisateurs.",
+  "main": "script.js",
+  "scripts": {
+    "test": "node script.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rik-Harold/bibliotheque-js.git"
+  },
+  "keywords": [
+    "bibliotheque",
+    "javascript"
+  ],
+  "author": "Rik-Harold",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rik-Harold/bibliotheque-js/issues"
+  },
+  "homepage": "https://github.com/Rik-Harold/bibliotheque-js#readme"
+}
